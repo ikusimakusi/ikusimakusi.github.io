@@ -1,0 +1,300 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+  integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+  crossorigin=""/>
+  <!-- Make sure you put this AFTER Leaflet's CSS -->
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+  integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+  crossorigin="">
+
+  </script>
+  <link rel="stylesheet" type="text/css" href="https://inorganik.github.io/assets/css/style.css?v=20191111">
+ <script type="text/javascript">
+L.Icon.Pulse = L.DivIcon.extend({
+
+       options: {
+           className: '',
+           iconSize: [12,12],
+           fillColor: 'green',
+           color: 'green',
+           animate: true,
+           heartbeat: 2,
+          fillOpacity: 0.5
+       },
+
+       initialize: function (options) {
+           L.setOptions(this,options);
+
+           // css
+
+           var uniqueClassName = 'lpi-'+ new Date().getTime()+'-'+Math.round(Math.random()*100000);
+
+           var before = ['background-color: '+this.options.fillColor];
+           var after = [
+
+               'box-shadow: 0 0 6px 2px '+this.options.color,
+
+               'animation: pulsate ' + this.options.heartbeat + 's ease-out',
+               'animation-iteration-count: infinite',
+               'animation-delay: '+ (this.options.heartbeat + .1) + 's',
+               'position:absolute',
+               'left:0',
+           ];
+
+           if (!this.options.animate){
+               after.push('animation: none');
+               after.push('box-shadow:none');
+           }
+
+           var css = [
+               '.'+uniqueClassName+'{'+before.join(';')+';}',
+               '.'+uniqueClassName+':after{'+after.join(';')+';}',
+           ].join('');
+
+           var el = document.createElement('style');
+           if (el.styleSheet){
+               el.styleSheet.cssText = css;
+           } else {
+               el.appendChild(document.createTextNode(css));
+           }
+
+           document.getElementsByTagName('head')[0].appendChild(el);
+
+           // apply css class
+
+           this.options.className = this.options.className+' leaflet-pulsing-icon '+uniqueClassName;
+
+           // initialize icon
+
+           L.DivIcon.prototype.initialize.call(this, options);
+
+       }
+   });
+
+   L.icon.pulse = function (options) {
+       return new L.Icon.Pulse(options);
+   };
+
+
+   L.Marker.Pulse = L.Marker.extend({
+       initialize: function (latlng,options) {
+           options.icon = L.icon.pulse(options);
+           L.Marker.prototype.initialize.call(this, latlng, options);
+       }
+   });
+
+   L.marker.pulse = function (latlng,options) {
+       return new L.Marker.Pulse(latlng,options);
+   };
+ </script>
+
+  <link rel="stylesheet" href="https://rawgit.com/mapshakers/leaflet-icon-pulse/master/src/L.Icon.Pulse.css" />
+<style>
+body {
+	text-align:left;
+}
+#mapid { height: 80%; width: 55%;}
+#zenbakiak { font: bold 26px "Helvetica Neue", Arial, Helvetica, sans-serif;}
+.text-label {
+           font: bold 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
+           color: black;
+           text-align: center;
+           border-radius: 15px;
+           /* Use color, background, set margins for offset, etc */
+       }
+       .leaflet-pulsing-icon {
+           border-radius: 100%;
+           opacity: 0.8;
+           box-shadow: 1px 1px 8px 0 rgba(0,0,0,0.75);
+       }
+
+       .leaflet-pulsing-icon:after {
+           content: "";
+           border-radius: 100%;
+           height: 300%;
+           width: 300%;
+           position: absolute;
+           margin: -100% 0 0 -100%;
+
+       }
+
+       @keyframes pulsate {
+           0% {
+               transform: scale(0.1, 0.1);
+               opacity: 0;
+               -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+               filter: alpha(opacity=0);
+           }
+           50% {
+               opacity: 1;
+               -ms-filter: none;
+               filter: none;
+           }
+           100% {
+               transform: scale(0.8, 0.8);
+               opacity: 0;
+               -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+               filter: alpha(opacity=0);
+           }
+       }
+</style>
+</head>
+<body>
+  <section>
+			<p style="position:absolute; top:5px; left:0;">Guztira egindako errekaduak:</p>
+			<h1 class="jumbo" id="myTargetElement" style="left:0;" >0</h1>
+		</section>
+<div id='zenbakiak'>Bolondresak auzoka: <span id="counter"></span></div>
+ <div id="mapid"></div>
+ <script type="text/javascript">
+ var mymap = L.map('mapid', {
+      zoomControl: false,
+      minZoom:13,
+      maxZoom:13
+ }
+).setView([43.258, -2.924], 13);
+mymap.dragging.disable();
+/*
+ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox/streets-v11',
+    tileSize: 512,
+    zoomOffset: -1,
+    accessToken: 'pk.eyJ1IjoiaWtlcm9sYWJhIiwiYSI6ImNrOHVnOHRyODAwMXczZm5majR0bnh2M3YifQ.tPm1W1bgU3PTNeFTgbtvmA'
+}).addTo(mymap);*/
+L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>',
+            maxZoom: 13,
+            id: 'mapbox/streets-v11',
+          //  tileSize: 512,
+          //  zoomOffset: -1
+        }).addTo(mymap);
+/*
+var circle3 = L.circle([43.265, -2.929], {
+    color: 'red',
+    fillColor: '#f03',
+    fillOpacity: 0.5,
+    radius: 350
+}).addTo(mymap);
+var i = 0;
+*/
+
+var errekaduak=364;
+var datuak= [ {
+  "auzoa" : "Santutxu",
+  "bolondresak": "70",
+  "alt":"43.2565",
+  "lat":"-2.9156"
+},
+{
+  "auzoa" : "Deustu",
+  "bolondresak": "120",
+  "alt":"43.2689",
+  "lat":"-2.9507"
+},
+{
+  "auzoa" : "Irala",
+  "bolondresak": "48",
+  "alt":"43.2504",
+  "lat":"-2.9400"
+},
+{
+  "auzoa" : "San Francisco",
+  "bolondresak": "90",
+  "alt":"43.2556",
+  "lat":"-2.9275"
+},
+{
+  "auzoa" : "Zabala",
+  "bolondresak": "20",
+  "alt":"43.2542",
+  "lat":"-2.9328"
+},
+{
+  "auzoa" : "Bilbo Zaharra",
+  "bolondresak": "48",
+  "alt":"43.2536",
+  "lat":"-2.9252"
+},
+{
+  "auzoa" : "Otxarkoaga",
+  "bolondresak": "49",
+  "alt":"43.2587",
+  "lat":"-2.9002"
+},
+{
+  "auzoa" : "Alde Zaharra",
+  "bolondresak": "180",
+  "alt":"43.2573",
+  "lat":"-2.9240"
+},
+{
+  "auzoa" : "Uribarri",
+  "bolondresak": "156",
+  "alt":"43.26682",
+  "lat":"-2.9233"
+},
+{
+  "auzoa" : "Indautxu - Basurtu",
+  "bolondresak": "111",
+  "alt":"43.26061",
+  "lat":"-2.9416"
+},
+{
+  "auzoa" : "San Adrian - Miribilla",
+  "bolondresak": "65",
+  "alt":"43.2492",
+  "lat":"-2.930"
+},
+{
+  "auzoa" : "San Inazio - Ibarrekolanda - Elorrieta",
+  "bolondresak": "70",
+  "alt":"43.2784",
+  "lat":"-2.9637"
+},
+{
+  "auzoa" : "Arangoiti",
+  "bolondresak": "26",
+  "alt":"43.2731",
+  "lat":"-2.9489"
+},
+{
+  "auzoa" : "Errekalde",
+  "bolondresak": "64",
+  "alt":"43.2485",
+  "lat":"-2.9468"
+}
+];
+var myLabel=[];
+var myicon=[];
+for (var i = 0; i < datuak.length; i++) {
+  var obj = datuak[i];
+  console.log(obj.auzoa);
+  console.log(obj.koordenadak);
+
+  myIcon = L.icon.pulse({iconSize:[30,30],color:'green'});
+  L.marker([obj.alt,obj.lat],{icon: myIcon, title: obj.auzoa}).addTo(mymap);
+  myLabel[i] = L.marker([obj.alt,obj.lat], {
+      icon: L.divIcon({
+          className: 'text-label',   // Set class for CSS styling
+          html: obj.bolondresak,
+          title: obj.auzoa
+      }),
+      zIndexOffset: 1000     // Make appear above other map features
+  }).addTo(mymap);
+myLabel[i].bindPopup("<b>"+obj.auzoa+"</b><br>"+obj.bolondresak+" bolondres");
+
+}
+
+var inv = setInterval(function() {
+    if(i < errekaduak)
+        document.getElementById("myTargetElement").innerHTML = ++i;
+    else
+        clearInterval(inv);
+}, 2000 / errekaduak);
+
+</script>
+</body>
+</html>
