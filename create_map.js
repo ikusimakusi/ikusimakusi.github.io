@@ -1,15 +1,25 @@
 
+//bilboko mugak
+var southWest = L.latLng(43.24, -2.98),
+    northEast = L.latLng(43.285, -2.88),
+    bounds = L.latLngBounds(southWest, northEast);
+
 var mymap = L.map('mapid', {
      zoomControl: false,
      minZoom:13,
-     maxZoom:13
+     maxZoom:14,
+     //static: true,
+     maxBounds:bounds
 }
 ).setView([43.266, -2.938], 13);
-//mymap.dragging.disable();
+
+//console.log(mymap.getBounds());
+
+//mymap.setMaxBounds(bounds);
 
 L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>',
-           maxZoom: 13,
+           maxZoom: 14,
            id: 'mapbox/streets-v11',
          //  tileSize: 512,
          //  zoomOffset: -1
@@ -23,8 +33,8 @@ for (var i = 0; i < datuak.length; i++) {
  console.log(obj.koordenadak);
 
  myIcon = L.icon.pulse({iconSize:[30,30],color:'green'});
- L.marker([obj.alt,obj.lat],{icon: myIcon, title: obj.auzoa}).addTo(mymap);
- myLabel[i] = L.marker([obj.alt,obj.lat], {
+ L.marker([obj.lat,obj.lng],{icon: myIcon, title: obj.auzoa}).addTo(mymap);
+ myLabel[i] = L.marker([obj.lat,obj.lng], {
      icon: L.divIcon({
          className: 'text-label',   // Set class for CSS styling
          html: obj.bolondresak,
