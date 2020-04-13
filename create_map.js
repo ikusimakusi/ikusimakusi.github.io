@@ -7,9 +7,9 @@ var southWest = L.latLng(43.24, -2.98),
 var mymap = L.map('mapid', {
      zoomControl: false,
      minZoom:13,
-     maxZoom:14,
+     maxZoom:14
      //static: true,
-     maxBounds:bounds
+     //maxBounds:bounds
 }
 ).setView([43.266, -2.938], 13);
 
