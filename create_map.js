@@ -15,7 +15,7 @@ var mymap = L.map('mapid', {
 
 //console.log(mymap.getBounds());
 
-//mymap.setMaxBounds(bounds);
+mymap.setMaxBounds(bounds);
 
 L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>',
