@@ -8,78 +8,22 @@
   integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
   crossorigin="">
 </script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
 <script type="text/javascript" src="leaflet_icon_pulse.js"></script>
 
-<link rel="stylesheet" type="text/css" href="https://inorganik.github.io/assets/css/style.css?v=20191111">
+<link rel="stylesheet" type="text/css" href="elkartasun.css">
 
 
-  <link rel="stylesheet" href="https://rawgit.com/mapshakers/leaflet-icon-pulse/master/src/L.Icon.Pulse.css" />
-<style>
-
-#mapid { left: 0;
-	       right: 0;
-	       margin: auto;
-         height: 70%;
-         width: 70%;}
-#bete {
-  height: 200px;
-}
-@media screen and (orientation:portrait) {
-   #mapid { height: 50%; }
-}
-.textuak { font: bold 26px "Helvetica Neue", Arial, Helvetica, sans-serif;}
-.text-label {
-           font: bold 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
-           color: black;
-           text-align: center;
-           border-radius: 15px;
-           /* Use color, background, set margins for offset, etc */
-       }
-       .leaflet-pulsing-icon {
-           border-radius: 100%;
-           opacity: 0.7;
-           box-shadow: 1px 1px 8px 0 rgba(0,0,0,0.75);
-       }
-
-       .leaflet-pulsing-icon:after {
-           content: "";
-           border-radius: 100%;
-           height: 300%;
-           width: 300%;
-           position: absolute;
-           margin: -100% 0 0 -100%;
-
-       }
-
-       @keyframes pulsate {
-           0% {
-               transform: scale(0.1, 0.1);
-               opacity: 0;
-               -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-               filter: alpha(opacity=0);
-           }
-           50% {
-               opacity: 1;
-               -ms-filter: none;
-               filter: none;
-           }
-           100% {
-               transform: scale(0.8, 0.8);
-               opacity: 0;
-               -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-               filter: alpha(opacity=0);
-           }
-       }
-</style>
 </head>
 <body>
-			<div class="textuak">Guztira egindako errekaduak:</div>
-			<h1 class="jumbo" id="myTargetElement" style="left:0;" >0</h1>
+<div class="textuak">Guztira egindako errekaduak:</div>
+<h1 class="jumbo" id="myTargetElement" style="left:0;" > 0 </h1>
  <div class="textuak"> Bolondresak auzoka: <span id="counter"></span></div>
  <div id="mapid"></div>
  <div id="bete"></div>
  <script type="text/javascript" src="auzo_datuak.js"></script>
- <script type="text/javascript" src="create_map.js"></script>
- <script type="text/javascript" src="counter.js"></script>
+ <script type="text/javascript" src="elkartasun.js"></script>
+
 </body>
 </html>

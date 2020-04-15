@@ -1,0 +1,79 @@
+@charset "UTF-8";
+
+
+
+
+@media screen and (orientation:portrait) {
+   #mapid { height: 50%; }
+}
+
+/*
+textua
+*/
+.textuak { font: bold 26px "Helvetica Neue", Arial, Helvetica, sans-serif; text-align: center; color:#868686 }
+/* counter
+*/
+h1.jumbo {
+	font-size:12em;
+	margin:0;
+	color:#4d63bc;
+  text-align:center;
+}
+
+/*
+mapa
+*/
+#mapid { left: 0;
+	       right: 0;
+	       margin: auto;
+         height: 70%;
+         width: 70%;}
+#bete {
+  height: 200px;
+}
+
+/*
+mapako ikonoak eta labelak
+*/
+.text-label {
+           font: bold 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
+           color: black;
+           text-align: center;
+           border-radius: 15px;
+           /* Use color, background, set margins for offset, etc */
+       }
+       .leaflet-pulsing-icon {
+           border-radius: 100%;
+           opacity: 0.7;
+           box-shadow: 1px 1px 8px 0 rgba(0,0,0,0.75);
+       }
+
+       .leaflet-pulsing-icon:after {
+           content: "";
+           border-radius: 100%;
+           height: 300%;
+           width: 300%;
+           position: absolute;
+           margin: -100% 0 0 -100%;
+
+       }
+
+       @keyframes pulsate {
+           0% {
+               transform: scale(0.1, 0.1);
+               opacity: 0;
+               -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+               filter: alpha(opacity=0);
+           }
+           50% {
+               opacity: 1;
+               -ms-filter: none;
+               filter: none;
+           }
+           100% {
+               transform: scale(0.8, 0.8);
+               opacity: 0;
+               -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+               filter: alpha(opacity=0);
+           }
+       }
