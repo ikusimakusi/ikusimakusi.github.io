@@ -74,10 +74,13 @@ L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             var obj = datuak[i];
             obj.bolondresak=bolondres_kopurua[i];
 
-
+            var shift=0; // we use it to center label when more than 2 digits
+            if (obj.bolondresak>=100){
+              shift=0.0006
+            }
             myIcon = L.icon.pulse({iconSize:[30,30],color:'green'});
             L.marker([obj.lat,obj.lng],{icon: myIcon, title: obj.auzoa}).addTo(mymap);
-            myLabel[i] = L.marker([obj.lat,obj.lng], {
+            myLabel[i] = L.marker([obj.lat,obj.lng-shift], {
                 icon: L.divIcon({
                     className: 'text-label',   // Set class for CSS styling
                     html: obj.bolondresak,
